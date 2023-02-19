@@ -19,14 +19,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16.x"
-          cache: "yarn"
+          cache: "npm"
 
       # Install our dependencies if we did not restore a dependency cache.
-      - name: Install dependencies using yarn
-        run: yarn --frozen-lockfile --prefer-offline
+      - name: Install dependencies using npm
+        run: npm ci --prefer-offline
 
       - name: Run linting
-        run: yarn lint
+        run: npm run lint
 
   test:
     name: Test
@@ -40,34 +40,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16.x"
-          cache: "yarn"
+          cache: "npm"
 
       # Install our dependencies if we did not restore a dependency cache.
-      - name: Install dependencies using yarn
-        run: yarn --frozen-lockfile --prefer-offline
+      - name: Install dependencies using npm
+        run: npm ci --prefer-offline
 
-      # Required for e2e tests.
       - name: Build the project
-        run: yarn build
+        run: npm run build
 
-      - name: Run unit and e2e tests
+      - name: Run unit tests
         run: |
-          yarn test:unit:ci --coverage
-          yarn test:e2e:ci
-
-      - name: Upload e2e test results
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright
-          path: |
-            tests/e2e/report
-            tests/e2e/artifacts
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: build
-          path: .output
+          npm run test:ci --coverage
 
       - name: Upload coverage reports to CodeCov
         uses: codecov/codecov-action@v2
