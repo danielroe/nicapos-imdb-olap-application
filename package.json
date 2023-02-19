@@ -6,13 +6,11 @@
     "generate": "nuxt generate",
     "analyze": "nuxt analyze",
     "preview": "nuxt preview",
-    "test:unit": "vitest",
-    "test:unit:ci": "vitest run",
-    "test:e2e": "playwright test",
-    "test:e2e:ci": "CI=true playwright test",
+    "test": "vitest",
+    "test:ci": "vitest run",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.html --max-warnings 0 --ignore-path .gitignore",
     "lint:fix": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts,.html --fix --ignore-path .gitignore",
-    "prepare": "nuxt prepare && husky install"
+    "prepare": "nuxt prepare"
   },
   "devDependencies": {
     "@nuxt/test-utils": "^3.1.2",
@@ -20,12 +18,10 @@
     "@nuxtjs/eslint-config-typescript": "^12.0.0",
     "@nuxtjs/i18n": "^8.0.0-beta.7",
     "@nuxtjs/tailwindcss": "^6.3.1",
-    "@playwright/test": "^1.30.0",
     "@vitest/coverage-c8": "^0.28.4",
     "eslint": "^8.33.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.3",
     "jsdom": "^21.1.0",
     "lint-staged": "^13.1.0",
     "nuxt": "3.1.2",
@@ -40,7 +36,8 @@
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",
     "@vueuse/core": "^9.12.0",
-    "@vueuse/nuxt": "^9.12.0"
+    "@vueuse/nuxt": "^9.12.0",
+    "pinia": "^2.0.30"
   },
   "lint-staged": {
     "*.{vue,js,jsx,cjs,mjs,ts,tsx,cts,mts,html}": [

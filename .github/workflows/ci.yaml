@@ -46,9 +46,6 @@ jobs:
       - name: Install dependencies using yarn
         run: yarn --frozen-lockfile --prefer-offline
 
-      - name: Install PlayWright dependencies
-        run: npx playwright install --with-deps
-
       # Required for e2e tests.
       - name: Build the project
         run: yarn build
