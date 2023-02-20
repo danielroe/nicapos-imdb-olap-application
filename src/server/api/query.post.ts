@@ -1,4 +1,5 @@
 import mysql from "mysql2/promise";
+import { performance } from "universal-perf-hooks";
 
 function allowQuery(query: string) {
   if (query === null) throw new Error("query cannot be null");
@@ -43,10 +44,17 @@ export default defineEventHandler(async (event) => {
     const config = useRuntimeConfig();
 
     if (allowQuery(query)) {
+      const start = performance.now();
+
       const connection = await mysql.createConnection(config.conn);
       const results = await connection.execute(query);
 
-      return results[0];
+      const end = performance.now();
+
+      return {
+        data: results[0],
+        runtime: end - start, // runtime in ms
+      };
     }
   } catch (err: any) {
     return { error: Error(err).message };
