@@ -28,6 +28,11 @@ To run this project, create a `.env` file in the root directory and add the foll
 | Variable | Description             | Default |
 |----------|-------------------------|---------|
 | SITE_URL | The url of your website | ""      |
+| MYSQL_HOST      | MySQL connection hostname | "localhost" |
+| MYSQL_PORT      | MySQL connection port     | 3306        |
+| MYSQL_DATABASE  | MySQL connection selected database | "mydb" |
+| MYSQL_USER      | MySQL connection username | "root"      |
+| MYSQL_PASSWORD  | MySQL connection password | ""          |
 
 ## Usage
 
