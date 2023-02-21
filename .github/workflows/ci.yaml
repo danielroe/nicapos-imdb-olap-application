@@ -36,6 +36,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup .env file
+        run: |
+          touch .env
+          echo MYSQL_HOST=${{ secrets.MYSQL_HOST }} >> .env
+          echo MYSQL_PORT=${{ secrets.MYSQL_PORT }} >> .env
+          echo MYSQL_DATABASE=${{ secrets.MYSQL_DATABASE }} >> .env
+          echo MYSQL_USER=${{ secrets.MYSQL_USER }} >> .env
+          echo MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }} >> .env
+          cat .env
+
       - name: Set up Node 16
         uses: actions/setup-node@v3
         with:
