@@ -36,10 +36,15 @@ function allowQuery(query: string) {
   return !pattern.test(query);
 }
 
+function checkQuery(query: string) {
+  if (!/limit/i.test(query)) return query + " LIMIT 1000";
+  return query;
+}
+
 export default defineEventHandler(async (event) => {
   try {
     const body = await readBody(event);
-    const query: string = body.query;
+    const query: string = checkQuery(body.query);
 
     const config = useRuntimeConfig();
 
@@ -57,6 +62,7 @@ export default defineEventHandler(async (event) => {
       };
     }
   } catch (err: any) {
+    event.node.res.statusCode = 400;
     return { error: Error(err).message };
   }
 });
