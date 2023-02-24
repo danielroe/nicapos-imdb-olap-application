@@ -18,8 +18,7 @@
         <li>
           <NuxtLink to="actors/movies_per_year" class="font-medium text-blue-600 hover:underline">
             Movies per year
-          </NuxtLink
-          >
+          </NuxtLink>
           - explore the annual count of movies featuring an actor
         </li>
         <li>
