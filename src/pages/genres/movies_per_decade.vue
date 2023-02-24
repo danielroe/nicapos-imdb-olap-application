@@ -46,16 +46,14 @@ const chart = reactive<Object>({
 const genre: Ref<Object> = ref({});
 
 watch(genre, () =>
-  // TODO create query that searches by genre
   runQuery(`
-  SELECT decade, COUNT(movie_id) as movies_in_year 
+  SELECT decade, COUNT(movie_id) as count_movies 
   FROM (SELECT movie_id, FLOOR(year/10)*10 as decade FROM movies_genres LEFT JOIN movies on movies.id = movies_genres.movie_id WHERE genre LIKE '${genre.value.genre}') t 
   GROUP BY decade 
   ORDER BY decade
   `)
 );
 
-// TODO adjust this
 watch(result, () => {
   data.count_movies = result.value.map((row: Object) => row.count_movies);
   data.decades = result.value.map((row: Object) => row.decade);
