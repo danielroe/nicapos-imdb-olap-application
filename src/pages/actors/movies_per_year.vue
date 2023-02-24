@@ -9,43 +9,18 @@
       <div class="mb-2 flex items-center justify-end gap-4 text-sm">
         <SelectorActors v-model="actor" class="z-20 mr-auto" />
 
-        <span class="text-gray-400">Fetch Time: {{ fetchTime }} ms</span>
+        <span v-if="fetchTime" class="text-gray-400">Fetch Time: {{ fetchTime }} ms</span>
 
-        <TabList class="inline-flex rounded-md text-sm font-medium text-gray-900 shadow-sm">
-          <Tab
-            class="rounded-l-lg border border-gray-200 px-4 py-2 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700"
-          >
-            Graph
-          </Tab>
-          <Tab
-            class="border-t border-b border-gray-200 px-4 py-2 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700"
-          >
-            Table
-          </Tab>
-          <Tab
-            class="rounded-r-md border border-gray-200 px-4 py-2 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:text-blue-700 focus:ring-2 focus:ring-blue-700"
-          >
-            JSON
-          </Tab>
-        </TabList>
+        <TabOptions />
       </div>
-      <TabPanels>
-        <TabPanel>
-          <div v-if="!loading && data.years.length">
-            <client-only>
-              <apexchart type="bar" height="350" :options="chart.options" :series="chart.series"></apexchart>
-            </client-only>
-          </div>
-        </TabPanel>
 
-        <TabPanel>
-          <Table :data="result"></Table>
-        </TabPanel>
-
-        <TabPanel class="rounded-lg border border-gray-200 p-4 text-sm">
-          {{ result }}
-        </TabPanel>
-      </TabPanels>
+      <TabResults :result="result">
+        <div v-if="!loading && data.years.length">
+          <client-only>
+            <apexchart type="bar" height="350" :options="chart.options" :series="chart.series"></apexchart>
+          </client-only>
+        </div>
+      </TabResults>
     </TabGroup>
 
     <p class="text-sm text-red-600">{{ error }}</p>
@@ -53,10 +28,11 @@
 </template>
 
 <script setup lang="ts">
-import { TabGroup, TabList, Tab, TabPanels, TabPanel } from "@headlessui/vue";
+import { TabGroup } from "@headlessui/vue";
 import { Ref } from "vue";
-import Table from "../components/Table.vue";
 import useQuery from "../../composables/useQuery";
+import TabOptions from "~~/src/components/TabOptions.vue";
+import TabResults from "~~/src/components/TabResults.vue";
 
 const { runQuery, result, fetchTime, loading, error } = useQuery();
 
