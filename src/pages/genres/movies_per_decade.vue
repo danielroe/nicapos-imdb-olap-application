@@ -7,7 +7,7 @@
 
     <TabGroup>
       <div class="mb-2 flex items-center justify-end gap-4 text-sm">
-        <SelectorActors v-model="actor" class="z-20 mr-auto" />
+        <SelectorGenres v-model="genre" class="z-20 mr-auto" />
 
         <span v-if="fetchTime" class="text-gray-400">Fetch Time: {{ fetchTime }} ms</span>
 
@@ -43,9 +43,9 @@ const chart = reactive<Object>({
   options: {},
 });
 
-const actor: Ref<Object> = ref({});
+const genre: Ref<Object> = ref({});
 
-watch(actor, () =>
+watch(genre, () =>
   // TODO create query that searches by genre
   runQuery(`
   SELECT	decade, 
@@ -56,7 +56,7 @@ watch(actor, () =>
             FLOOR(movies.year/10)*10 AS decade
     FROM    roles
     LEFT JOIN movies ON movies.id = roles.movie_id
-    WHERE   roles.actor_id = ${actor.value.id}
+    WHERE   roles.actor_id = ${genre.value.id}
   ) t
   LEFT JOIN actors ON actors.id = t.actor_id
   GROUP BY  actor_id, decade

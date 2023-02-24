@@ -7,7 +7,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(row, index) in props.data" :key="index" class="border-b bg-white dark:bg-gray-800">
+        <tr v-for="(row, index) in props.data" :key="index" class="border-b bg-white">
           <td v-for="head in headings" :key="head" class="px-6 py-4">{{ row[head] }}</td>
         </tr>
       </tbody>
