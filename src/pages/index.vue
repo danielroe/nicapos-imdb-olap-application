@@ -5,6 +5,9 @@
       This platform presents data from an IMDb dataset using easy-to-read charts and diagrams. Explore and gain insights
       into the dataset using one of the following pre-defined categories below.
     </p>
+    <button class="fixed top-7 right-7 rounded bg-orange-300 p-2">
+      <NuxtLink to="demo">SQL Query Area</NuxtLink>
+    </button>
   </section>
 
   <section class="flex w-full flex-row gap-8 px-12 text-justify leading-5 text-gray-900">
