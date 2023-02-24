@@ -49,16 +49,14 @@ const genre: Ref<Object> = ref({});
 
 /* Edit query here */
 watch(genre, () =>
-  // TODO create query that searches by genre
   runQuery(`
   SELECT year, COUNT(movie_id) as count_movies
   FROM (SELECT movie_id, year FROM movies_genres LEFT JOIN movies on movies.id = movies_genres.movie_id WHERE genre LIKE '${genre.value.genre}') t 
   GROUP BY year 
   ORDER BY year
-`)
+  `)
 );
 
-// TODO create query that searches by genre
 watch(result, () => {
   /*
     Edit this whole part part, map query data to data then edit chart.series and chart.options depending on how you want the chart/graph to look like. 

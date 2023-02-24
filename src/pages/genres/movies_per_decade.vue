@@ -48,20 +48,11 @@ const genre: Ref<Object> = ref({});
 watch(genre, () =>
   // TODO create query that searches by genre
   runQuery(`
-  SELECT	decade, 
-          COUNT(movie_id) AS count_movies
-  FROM (
-    SELECT  roles.actor_id,
-            roles.movie_id,
-            FLOOR(movies.year/10)*10 AS decade
-    FROM    roles
-    LEFT JOIN movies ON movies.id = roles.movie_id
-    WHERE   roles.actor_id = ${genre.value.id}
-  ) t
-  LEFT JOIN actors ON actors.id = t.actor_id
-  GROUP BY  actor_id, decade
-  ORDER BY  decade
-`)
+  SELECT decade, COUNT(movie_id) as movies_in_year 
+  FROM (SELECT movie_id, FLOOR(year/10)*10 as decade FROM movies_genres LEFT JOIN movies on movies.id = movies_genres.movie_id WHERE genre LIKE '${genre.value.genre}') t 
+  GROUP BY decade 
+  ORDER BY decade
+  `)
 );
 
 // TODO adjust this
