@@ -16,11 +16,16 @@
 
       <ul class="grid max-w-md gap-1 space-y-1">
         <li>
-          <a href="#" class="font-medium text-blue-600 hover:underline">Movies per year</a>
+          <NuxtLink to="actors/movies_per_year" class="font-medium text-blue-600 hover:underline">
+            Movies per year
+          </NuxtLink
+          >
           - explore the annual count of movies featuring an actor
         </li>
         <li>
-          <a href="#" class="font-medium text-blue-600 hover:underline">Movies per decade</a>
+          <NuxtLink to="actors/movies_per_decade" class="font-medium text-blue-600 hover:underline">
+            Movies per decade
+          </NuxtLink>
           - view the count of movies an actor has starred in through the decades
         </li>
       </ul>
