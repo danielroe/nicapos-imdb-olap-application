@@ -7,23 +7,13 @@
 
     <TabGroup>
       <div class="my-4 flex items-center gap-4 text-sm">
-        <div class="relative overflow-visible">
+        <FloatingInput label="Actor">
           <SelectorActors v-model="actor" />
-          <b
-            class="absolute top-2.5 left-2.5 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500"
-          >
-            Actor
-          </b>
-        </div>
+        </FloatingInput>
 
-        <div class="relative overflow-visible">
+        <FloatingInput label="Period">
           <SelectBox v-model="period" :options="periodOptions" class="w-32" />
-          <b
-            class="absolute top-2.5 left-2.5 z-10 origin-[0] -translate-y-4 scale-75 transform bg-white px-2 text-sm text-gray-500"
-          >
-            Period
-          </b>
-        </div>
+        </FloatingInput>
 
         <TabOptions class="ml-auto" />
       </div>

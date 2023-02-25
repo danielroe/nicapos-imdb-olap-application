@@ -7,7 +7,9 @@
 
     <TabGroup>
       <div class="mb-2 flex items-center justify-end gap-4 text-sm">
-        <SelectorGenres v-model="genre" class="z-20 mr-auto" />
+        <FloatingInput label="Genre" class="z-10 mr-auto">
+          <SelectorGenres v-model="genre" />
+        </FloatingInput>
 
         <span v-if="fetchTime" class="text-gray-400">Fetch Time: {{ fetchTime }} ms</span>
 
