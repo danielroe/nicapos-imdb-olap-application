@@ -5,9 +5,6 @@
       This platform presents data from an IMDb dataset using easy-to-read charts and diagrams. Explore and gain insights
       into the dataset using one of the following pre-defined categories below.
     </p>
-    <button class="fixed top-7 right-7 rounded bg-orange-300 p-2">
-      <NuxtLink to="demo">SQL Query Area</NuxtLink>
-    </button>
   </section>
 
   <section class="flex w-full flex-row gap-8 px-12 text-justify leading-5 text-gray-900">
@@ -17,19 +14,19 @@
 
       <ul class="grid max-w-md gap-1 space-y-1">
         <li>
-          <NuxtLink to="actors/movies?period=year" class="font-medium text-blue-600 hover:underline">
+          <NuxtLink to="/actors/movies?period=year" class="font-medium text-blue-600 hover:underline">
             Movies per year
           </NuxtLink>
           - explore the annual count of movies featuring an actor
         </li>
         <li>
-          <NuxtLink to="actors/movies?period=decade" class="font-medium text-blue-600 hover:underline">
+          <NuxtLink to="/actors/movies?period=decade" class="font-medium text-blue-600 hover:underline">
             Movies per decade
           </NuxtLink>
           - view the count of movies an actor has starred in through the decades
         </li>
         <li>
-          <NuxtLink to="actors/movies?period=century" class="font-medium text-blue-600 hover:underline">
+          <NuxtLink to="/actors/movies?period=century" class="font-medium text-blue-600 hover:underline">
             Movies per century
           </NuxtLink>
           - see the number of movies in which an actor has appeared across various centuries
@@ -43,13 +40,13 @@
 
       <ul class="grid max-w-md gap-1 space-y-1">
         <li>
-          <NuxtLink to="genres/movies_per_year" class="font-medium text-blue-600 hover:underline">
+          <NuxtLink to="/genres/movies_per_year" class="font-medium text-blue-600 hover:underline">
             Movies per year
           </NuxtLink>
           - explore the annual count of movies in a genre
         </li>
         <li>
-          <NuxtLink to="genres/movies_per_decade" class="font-medium text-blue-600 hover:underline">
+          <NuxtLink to="/genres/movies_per_decade" class="font-medium text-blue-600 hover:underline">
             Movies per decade
           </NuxtLink>
           - explore movies in a genre through the decades
