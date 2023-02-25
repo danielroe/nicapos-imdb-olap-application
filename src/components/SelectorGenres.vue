@@ -7,10 +7,7 @@
         <ComboboxInput
           class="w-full rounded-lg border-gray-200 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
           :display-value="(genre) => genre.genre"
-          @change="
-            search = $event.target.value;
-            debounceSearch();
-          "
+          @change="search = $event.target.value"
         />
         <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-2">
           <LoadingIndicator v-if="loading" class="mr-1 h-3 w-3" />
@@ -74,7 +71,7 @@ import {
   ComboboxOption,
   TransitionRoot,
 } from "@headlessui/vue";
-import { useVModel } from "@vueuse/core";
+import { useVModel, refDebounced } from "@vueuse/core";
 import useQuery from "../composables/useQuery";
 
 const props = defineProps<{
@@ -86,23 +83,18 @@ const selected = useVModel(props, "modelValue", emit);
 const { runQuery, result, loading } = useQuery();
 
 const search = ref("");
-const debouncedSearch = ref("");
-let timeoutId: any = null;
+const debouncedSearch = refDebounced(search, 500);
 
-const debounceSearch = () => {
-  clearTimeout(timeoutId);
-
-  timeoutId = setTimeout(() => {
-    debouncedSearch.value = search.value;
-  }, 500);
-};
-
-watch(debouncedSearch, (value) =>
-  runQuery(`
+const query = computed(
+  () => `
   SELECT DISTINCT genre
   FROM movies_genres
-  WHERE genre LIKE '%${value}%'
+  WHERE genre LIKE '${debouncedSearch.value}%'
+  ORDER BY genre
   LIMIT   100
-`)
+`
 );
+
+runQuery(query.value);
+watch(debouncedSearch, () => runQuery(query.value));
 </script>

@@ -40,16 +40,22 @@
 
       <ul class="grid max-w-md gap-1 space-y-1">
         <li>
-          <NuxtLink to="/genres/movies_per_year" class="font-medium text-blue-600 hover:underline">
+          <NuxtLink to="/genres/movies?period=year" class="font-medium text-blue-600 hover:underline">
             Movies per year
           </NuxtLink>
           - explore the annual count of movies in a genre
         </li>
         <li>
-          <NuxtLink to="/genres/movies_per_decade" class="font-medium text-blue-600 hover:underline">
+          <NuxtLink to="/genres/movies?period=decade" class="font-medium text-blue-600 hover:underline">
             Movies per decade
           </NuxtLink>
-          - explore movies in a genre through the decades
+          - view the count of movies in a genre in through the decades
+        </li>
+        <li>
+          <NuxtLink to="/genres/movies?period=century" class="font-medium text-blue-600 hover:underline">
+            Movies per century
+          </NuxtLink>
+          - see the number of movies in a genre across various centuries
         </li>
       </ul>
     </div>
