@@ -37,7 +37,7 @@ function allowQuery(query: string) {
 }
 
 function checkQuery(query: string) {
-  if (!/limit/i.test(query)) return query + " LIMIT 1000";
+  if (!/limit/i.test(query)) return query.replace(/[;]$/, "") + " LIMIT 1000";
   return query;
 }
 
@@ -48,10 +48,16 @@ export default defineEventHandler(async (event) => {
 
     const config = useRuntimeConfig();
 
+    const connection = mysql.createPool({
+      ...config.conn,
+      waitForConnections: true,
+      connectionLimit: 10,
+      queueLimit: 0,
+    });
+
     if (allowQuery(query)) {
       const start = performance.now();
 
-      const connection = await mysql.createConnection(config.conn);
       const results = await connection.execute(query);
 
       const end = performance.now();
