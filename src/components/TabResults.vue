@@ -4,8 +4,8 @@
       <slot></slot>
     </TabPanel>
 
-    <TabPanel>
-      <Table :data="props.result"></Table>
+    <TabPanel class="rounded-lg border border-gray-200 p-4 text-sm">
+      <Table v-if="props.result.length" :data="props.result"></Table>
     </TabPanel>
 
     <TabPanel class="rounded-lg border border-gray-200 p-4 text-sm">
