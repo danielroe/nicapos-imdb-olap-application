@@ -1,14 +1,15 @@
 <template>
-  <TabPanels>
-    <TabPanel class="rounded-lg border border-gray-200 p-4 text-sm">
+  <LoadingChart v-if="props.loading" />
+  <TabPanels v-else>
+    <TabPanel class="tab overflow rounded-lg border border-gray-200 p-4 text-sm">
       <slot></slot>
     </TabPanel>
 
-    <TabPanel class="rounded-lg border border-gray-200 p-4 text-sm">
+    <TabPanel class="tab overflow-y-scroll rounded-lg border border-gray-200 p-4 text-sm">
       <Table v-if="props.result.length" :data="props.result"></Table>
     </TabPanel>
 
-    <TabPanel class="rounded-lg border border-gray-200 p-4 text-sm">
+    <TabPanel class="tab overflow-y-scroll rounded-lg border border-gray-200 p-4 text-sm">
       {{ props.result }}
     </TabPanel>
   </TabPanels>
@@ -23,5 +24,15 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  loading: {
+    type: Boolean,
+    default: false,
+  },
 });
 </script>
+
+<style>
+.tab {
+  height: 485px;
+}
+</style>

@@ -6,10 +6,11 @@ export default function () {
   const fetchTime: Ref<number> = ref(0);
 
   const error: Ref<String> = ref("");
-  const loading: Ref<Boolean> = ref(true);
+  const loading: Ref<boolean> = ref(false);
 
   async function runQuery(query: string) {
     try {
+      loading.value = true;
       const response = await axios.post("/api/query", { query });
 
       if (response.status === 200) {

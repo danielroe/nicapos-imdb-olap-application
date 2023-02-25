@@ -28,10 +28,10 @@
         <TabOptions class="ml-auto" />
       </div>
 
-      <TabResults :result="result">
-        <div v-if="!loading && data.period.length">
+      <TabResults :result="result" :loading="loading">
+        <div v-if="!loading && data.period.length" class="z-0">
           <client-only>
-            <apexchart type="bar" height="350" :options="chart.options" :series="chart.series"></apexchart>
+            <apexchart type="bar" height="450" :options="chart.options" :series="chart.series"></apexchart>
           </client-only>
         </div>
       </TabResults>
