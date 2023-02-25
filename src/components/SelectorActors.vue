@@ -5,11 +5,15 @@
         class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm"
       >
         <ComboboxInput
-          class="w-full rounded-lg border-gray-200 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
+          class="w-full rounded-lg border-gray-200 py-2 pl-3 pr-12 text-sm leading-5 text-gray-900 focus:ring-0"
           :display-value="(actor) => actor.name"
-          @change="search = $event.target.value"
+          @change="
+            search = $event.target.value;
+            debounceSearch();
+          "
         />
         <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-2">
+          <LoadingIndicator v-if="loading" class="mr-1 h-3 w-3" />
           <Icon name="heroicons:chevron-up-down" class="h-5 w-5 text-gray-400" aria-hidden="true" />
         </ComboboxButton>
       </div>
@@ -79,19 +83,27 @@ const props = defineProps<{
 const emit = defineEmits(["update:modelValue"]);
 const selected = useVModel(props, "modelValue", emit);
 
-const { runQuery, result } = useQuery();
+const { runQuery, result, loading } = useQuery();
 
 const search = ref("");
+const debouncedSearch = ref("");
+let timeoutId: any = null;
 
-const query = computed(
-  () => `
-    SELECT  id, 
-            CONCAT(first_name, ' ', last_name) AS name
-    FROM    actors 
-    WHERE   CONCAT(first_name, ' ', last_name) LIKE '%${search.value}%'
-    LIMIT   100
-  `
+const debounceSearch = () => {
+  clearTimeout(timeoutId);
+
+  timeoutId = setTimeout(() => {
+    debouncedSearch.value = search.value;
+  }, 500);
+};
+
+watch(debouncedSearch, (value) =>
+  runQuery(`
+  SELECT  id, 
+          CONCAT(first_name, ' ', last_name) AS name
+  FROM    actors 
+  WHERE   CONCAT(first_name, ' ', last_name) LIKE '${value}%'
+  LIMIT   100
+`)
 );
-
-watch(search, () => runQuery(query.value));
 </script>
