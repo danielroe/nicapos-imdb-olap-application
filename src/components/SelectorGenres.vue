@@ -1,12 +1,12 @@
 <template>
-  <Combobox v-model="selected">
+  <Combobox v-model="selected" :multiple="props.allowMultiple">
     <div class="relative mt-1">
       <div
         class="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm"
       >
         <ComboboxInput
           class="w-full rounded-lg border-gray-200 py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-          :display-value="(genre) => genre.genre"
+          :display-value="(genre: any) => props.allowMultiple ? genre.map((v: Object) => v.genre).join(', ') : genre.genre"
           @change="search = $event.target.value"
         />
         <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-2">
@@ -74,9 +74,16 @@ import {
 import { useVModel, refDebounced } from "@vueuse/core";
 import useQuery from "../composables/useQuery";
 
-const props = defineProps<{
-  modelValue: Object;
-}>();
+const props = defineProps({
+  modelValue: {
+    type: Object,
+    required: true,
+  },
+  allowMultiple: {
+    type: Boolean,
+    default: false,
+  },
+});
 const emit = defineEmits(["update:modelValue"]);
 const selected = useVModel(props, "modelValue", emit);
 
