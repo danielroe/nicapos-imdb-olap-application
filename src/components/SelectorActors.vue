@@ -7,10 +7,7 @@
         <ComboboxInput
           class="w-full rounded-lg border-gray-200 py-2 pl-3 pr-12 text-sm leading-5 text-gray-900 focus:ring-0"
           :display-value="(actor) => actor.name"
-          @change="
-            search = $event.target.value;
-            debounceSearch();
-          "
+          @change="search = $event.target.value"
         />
         <ComboboxButton class="absolute inset-y-0 right-0 flex items-center pr-2">
           <LoadingIndicator v-if="loading" class="mr-1 h-3 w-3" />
@@ -74,8 +71,7 @@ import {
   ComboboxOption,
   TransitionRoot,
 } from "@headlessui/vue";
-import { useVModel } from "@vueuse/core";
-import useQuery from "../composables/useQuery";
+import { useVModel, watchDebounced } from "@vueuse/core";
 
 const props = defineProps<{
   modelValue: Object;
@@ -86,24 +82,5 @@ const selected = useVModel(props, "modelValue", emit);
 const { runQuery, result, loading } = useQuery();
 
 const search = ref("");
-const debouncedSearch = ref("");
-let timeoutId: any = null;
-
-const debounceSearch = () => {
-  clearTimeout(timeoutId);
-
-  timeoutId = setTimeout(() => {
-    debouncedSearch.value = search.value;
-  }, 500);
-};
-
-watch(debouncedSearch, (value) =>
-  runQuery(`
-  SELECT  id, 
-          CONCAT(first_name, ' ', last_name) AS name
-  FROM    actors 
-  WHERE   CONCAT(first_name, ' ', last_name) LIKE '${value}%'
-  LIMIT   100
-`)
-);
+watchDebounced(search, (value) => runQuery(getSearchActors(value)), { debounce: 500, maxWait: 2000 });
 </script>

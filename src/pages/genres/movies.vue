@@ -55,7 +55,6 @@
 import { TabGroup } from "@headlessui/vue";
 import { Ref, ref } from "vue";
 import { watchDebounced } from "@vueuse/core";
-import useQuery from "../../composables/useQuery";
 
 const { runQuery, result, fetchTime, loading, error } = useQuery();
 
@@ -88,27 +87,8 @@ function isValidYear(year: any) {
 function updateView() {
   if (Object.keys(genre.value).length === 0) return;
 
-  const periodDurations: Object = {
-    year: 1,
-    decade: 10,
-    century: 100,
-  };
-  const duration: number = periodDurations[period.value];
-
-  runQuery(`
-    SELECT  period, COUNT(movie_id) as count_movies 
-    FROM (
-      SELECT  movie_id, 
-              FLOOR(movies.year/${duration})*${duration} as period 
-      FROM movies_genres 
-      LEFT JOIN movies on movies.id = movies_genres.movie_id 
-      WHERE genre LIKE '${genre.value.genre}'
-      ${isValidYear(fromYear.value) ? ` AND movies.year >= ${fromYear.value}` : ""}
-      ${isValidYear(toYear.value) ? ` AND movies.year <= ${toYear.value}` : ""}
-    ) t 
-    GROUP BY period 
-    ORDER BY period
-  `);
+  const query = getGenreMovies(genre.value.genre, period.value, fromYear.value, toYear.value);
+  runQuery(query);
 }
 
 watch(genre, updateView);

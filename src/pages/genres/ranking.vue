@@ -55,7 +55,6 @@
 import { TabGroup } from "@headlessui/vue";
 import { Ref, ref, ComputedRef } from "vue";
 import { watchDebounced } from "@vueuse/core";
-import useQuery from "../../composables/useQuery";
 
 const { runQuery, result, fetchTime, loading, error } = useQuery();
 
@@ -88,32 +87,8 @@ function isValidYear(year: any) {
 function updateView() {
   if (genres.value.length === 0) return;
 
-  const queryPeriod = {
-    year: "movies.year",
-    decade: "FLOOR(movies.year/10)*10",
-    century: "FLOOR(movies.year/100)*100",
-  }[period.value];
-
-  const genreColumns = genreList.value.map(
-    (genre) => `ROUND(AVG(CASE WHEN mg.genre = '${genre}' THEN movies.rank END), 2) AS '${genre}' `
-  );
-
-  const yearFilter = isValidYear(fromYear.value)
-    ? isValidYear(toYear.value)
-      ? `WHERE movies.year >= ${fromYear.value} AND movies.year <= ${toYear.value}`
-      : `WHERE movies.year >= ${fromYear.value}`
-    : isValidYear(toYear.value)
-    ? `WHERE movies.year <= ${toYear.value}`
-    : "";
-
-  runQuery(
-    `SELECT ${queryPeriod} AS period, ${genreColumns.join(", ")}
-    FROM movies
-    LEFT JOIN movies_genres AS mg ON mg.movie_id = movies.id
-    ${yearFilter}
-    GROUP BY period
-    ORDER BY period`
-  );
+  const query = getGenreRankings(genreList.value, period.value, fromYear.value, toYear.value);
+  runQuery(query);
 }
 
 watchDebounced(genres, updateView, { debounce: 1000, maxWait: 2000 });

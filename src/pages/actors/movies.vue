@@ -36,9 +36,6 @@
 <script setup lang="ts">
 import { TabGroup } from "@headlessui/vue";
 import { Ref, ref } from "vue";
-import useQuery from "../../composables/useQuery";
-import TabOptions from "~~/src/components/TabOptions.vue";
-import TabResults from "~~/src/components/TabResults.vue";
 
 const { runQuery, result, fetchTime, loading, error } = useQuery();
 
@@ -65,28 +62,8 @@ const actor: Ref<Object> = ref({});
 function updateView() {
   if (Object.keys(actor.value).length === 0) return;
 
-  const periodDurations: Object = {
-    year: 1,
-    decade: 10,
-    century: 100,
-  };
-  const duration: number = periodDurations[period.value];
-
-  runQuery(`
-    SELECT	period, 
-            COUNT(movie_id) AS count_movies
-    FROM (
-      SELECT  roles.actor_id,
-              roles.movie_id,
-              FLOOR(movies.year/${duration})*${duration} AS period
-      FROM    roles
-      LEFT JOIN movies ON movies.id = roles.movie_id
-      WHERE   roles.actor_id = ${actor.value.id}
-    ) t
-    LEFT JOIN actors ON actors.id = t.actor_id
-    GROUP BY  actor_id, period
-    ORDER BY  period
-  `);
+  const query = getActorMovies(actor.value.id, period.value);
+  runQuery(query);
 }
 
 watch(actor, updateView);

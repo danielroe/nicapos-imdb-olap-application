@@ -92,15 +92,7 @@ const { runQuery, result, loading } = useQuery();
 const search = ref("");
 const debouncedSearch = refDebounced(search, 500);
 
-const query = computed(
-  () => `
-  SELECT DISTINCT genre
-  FROM movies_genres
-  WHERE genre LIKE '${debouncedSearch.value}%'
-  ORDER BY genre
-  LIMIT   100
-`
-);
+const query = computed(() => getGenres(debouncedSearch.value));
 
 runQuery(query.value);
 watch(debouncedSearch, () => runQuery(query.value));
