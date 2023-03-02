@@ -47,14 +47,12 @@ ALTER TABLE `movies` ADD INDEX `rank_index` (`rank`);
 CREATE TABLE `rating_fact` (
   `movie_id` int(11),
   `actor_id` int(11),
-  `genre` varchar(100),
   `role` varchar(100),
   `rank` float,
   `year` int(11) DEFAULT NULL,
   PRIMARY KEY (`movie_id`),
   CONSTRAINT `movie_fk` FOREIGN KEY (`movie_id`) REFERENCES `movies` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `actor_fk` FOREIGN KEY (`actor_id`) REFERENCES `actors` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `genre_fk` FOREIGN KEY (`genre`) REFERENCES `movie_genre` (`genre`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `role_fk` FOREIGN KEY (`role`) REFERENCES `roles` (`role`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `rank_fk` FOREIGN KEY (`rank`) REFERENCES `movies` (`rank`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `year_fk` FOREIGN KEY (`year`) REFERENCES `movies` (`year`) ON DELETE CASCADE ON UPDATE CASCADE

@@ -22,9 +22,9 @@ LEFT JOIN roles_dim r ON m.id = r.movie_id
 LEFT JOIN actors_dim a ON r.actor_id = a.id;
 
 ALTER TABLE rating_fact 
-ADD FOREIGN KEY (`movie_id`) REFERENCES `movies_dim` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD FOREIGN KEY (`actor_id`) REFERENCES `actors_dim` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-ADD FOREIGN KEY (`movie_id`) REFERENCES `roles_dim` (`movie_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+ADD FOREIGN KEY (`movie_id`) REFERENCES `movies_dim` (`id`),
+ADD FOREIGN KEY (`actor_id`) REFERENCES `actors_dim` (`id`),
+ADD FOREIGN KEY (`movie_id`) REFERENCES `roles_dim` (`movie_id`);
 
 
 
