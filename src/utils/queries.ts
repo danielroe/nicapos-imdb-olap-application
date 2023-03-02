@@ -2,7 +2,7 @@ export function getSearchActors(match: string) {
   return `
     SELECT  id, 
             CONCAT(first_name, ' ', last_name) AS name
-    FROM    actors 
+    FROM    actors_dim AS actors 
     WHERE   CONCAT(first_name, ' ', last_name) LIKE '${match}%'
     LIMIT   100
   `;
@@ -11,7 +11,7 @@ export function getSearchActors(match: string) {
 export function getGenres(match: string) {
   return `
     SELECT DISTINCT genre
-    FROM movies_genres
+    FROM movies_genres_dim
     WHERE genre LIKE '${match}%'
     ORDER BY genre
   `;
@@ -43,11 +43,11 @@ export function getActorMovies(actorId: number, period: string) {
       SELECT  roles.actor_id,
               roles.movie_id,
               ${periodQuery[period]} AS period
-      FROM    roles
-      LEFT JOIN movies ON movies.id = roles.movie_id
+      FROM    roles_dim AS roles
+      LEFT JOIN movies_dim AS movies ON movies.id = roles.movie_id
       WHERE   roles.actor_id = ${actorId}
     ) t
-    LEFT JOIN actors ON actors.id = t.actor_id
+    LEFT JOIN actors_dim AS actors ON actors.id = t.actor_id
     GROUP BY  actor_id, period
     ORDER BY  period
   `;
@@ -81,8 +81,8 @@ export function getGenreMovies(
     FROM (
       SELECT  movie_id, 
               ${periodQuery[period]} AS period 
-      FROM movies_genres 
-      LEFT JOIN movies on movies.id = movies_genres.movie_id 
+      FROM movies_genres_dim AS movies_genres
+      LEFT JOIN movies_dim AS movies ON movies.id = movies_genres.movie_id 
       WHERE genre LIKE '${genreName}' 
             ${yearFilter}
     ) t 
@@ -119,8 +119,8 @@ export function getGenreRankings(
 
   return `
     SELECT ${periodQuery[period]} AS period, ${genreColumns.join(", ")}
-    FROM movies
-    LEFT JOIN movies_genres AS mg ON mg.movie_id = movies.id
+    FROM movies_dim AS movies
+    LEFT JOIN movies_genres_dim AS mg ON mg.movie_id = movies.id
     ${yearFilter}
     GROUP BY period
     ORDER BY period

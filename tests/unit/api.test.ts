@@ -16,32 +16,32 @@ describe("API call to /query", async () => {
   }
 
   test('Valid SELECT query returns result with "data" and "runtime" keys', async () => {
-    const result = await call("SELECT * FROM actors LIMIT 10");
+    const result = await call("SELECT * FROM actors_dim LIMIT 10");
 
     expect(result).toHaveProperty("data");
     expect(result).toHaveProperty("runtime");
   });
 
   test('Valid SELECT query returns up to 1000 rows in "data" key', async () => {
-    const result = await call("SELECT * FROM actors");
+    const result = await call("SELECT * FROM actors_dim");
 
     expect(result.data.length).toBeLessThanOrEqual(1000);
   });
 
   test.fails('Invalid query containing "DELETE" returns an error', async () => {
-    await call("DELETE * FROM actors");
+    await call("DELETE * FROM actors_dim");
   });
 
   test.fails('Invalid query containing "INSERT" returns an error', async () => {
     await call(`
-      INSERT INTO actors (first_name, last_name, gender) 
+      INSERT INTO actors_dim (first_name, last_name, gender) 
       VALUES ('John', 'Doe', 'M')
     `);
   });
 
   test.fails("Non-SELECT query returns an error", async () => {
     await call(`
-      UPDATE actors
+      UPDATE actors_dim
       SET first_name = 'Jane', gender = 'F') 
       WHERE first_name = 'John' AND last_name = 'Doe'
     `);
@@ -52,11 +52,11 @@ describe("API call to /query", async () => {
   });
 
   test.fails("Query with syntax errors returns an error", async () => {
-    await call("SELECT actors LIMIT 10");
+    await call("SELECT actors_dim LIMIT 10");
   });
 
   test('"runtime" key in the response object is a floating-point number representing the time in milliseconds', async () => {
-    const result = await call("SELECT * FROM actors LIMIT 10");
+    const result = await call("SELECT * FROM actors_dim LIMIT 10");
 
     expect(result.runtime).toBeTypeOf("number");
     expect(result.runtime).toBeGreaterThan(0);
