@@ -17,7 +17,7 @@ CREATE TABLE `rating_fact` (
   PRIMARY KEY (`id`))
 SELECT r.movie_id, r.actor_id, r.role, m.year, m.rank
 FROM movies m
-LEFT JOIN movie_genres mg ON m.id = mg.movie_id
+LEFT JOIN movies_genres mg ON m.id = mg.movie_id
 LEFT JOIN roles r ON m.id = r.movie_id
 LEFT JOIN actors a ON r.actor_id = a.id;
 
